@@ -1,3 +1,4 @@
 /django_env
-/.env
+django_playground/.env
 __pycache__
+.json
