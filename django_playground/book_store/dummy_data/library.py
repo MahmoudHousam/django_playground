@@ -2,58 +2,52 @@ from book_store.models import Book, Library
 
 books_fetch = Book.objects.all()
 books_dict = {book.title: book for book in books_fetch}
+libraries_data = {
+    "The Grey Publisher": [
+        "1984",
+        "Animal Farm",
+        "Homage to Catalonia",
+        "To Kill a Mockingbird",
+        "Go Set a Watchman",
+        "Harry Potter and the Sorcerer Stone",
+        "Harry Potter and the Chamber of Secrets",
+        "Harry Potter and the Prisoner of Azkaban",
+        "The Great Gatsby",
+        "Tender Is the Night",
+        "The Beautiful and Damned",
+        "The Lord of the Rings",
+        "The Hobbit",
+        "The Silmarillion",
+        "Pride and Prejudice",
+    ],
+    "House of Paper": [
+        "Sense and Sensibility",
+        "Emma",
+        "The Adventures of Huckleberry Finn",
+        "The Adventures of Tom Sawyer",
+        "A Connecticut Yankee in King Arthur’s Court",
+        "War and Peace",
+        "The Death of Ivan Ilyich",
+        "Anna Karenina",
+        "Frankenstein",
+        "The Last Man",
+        "Love in the Time of Cholera",
+        "One Hundred Years of Solitude",
+        "Chronicle of a Death Foretold",
+    ],
+}
 
-create_libraries = [
-    Library(name="The Grey Publisher", books=books_dict["1984"]),
-    Library(name="The Grey Publisher", books=books_dict["Animal Farm"]),
-    Library(name="The Grey Publisher", books=books_dict["Homage to Catalonia"]),
-    Library(name="The Grey Publisher", books=books_dict["To Kill a Mockingbird"]),
-    Library(name="The Grey Publisher", books=books_dict["Go Set a Watchman"]),
-    Library(
-        name="The Grey Publisher",
-        books=books_dict["Harry Potter and the Sorcerer’s Stone"],
-    ),
-    Library(
-        name="The Grey Publisher",
-        books=books_dict["Harry Potter and the Chamber of Secrets"],
-    ),
-    Library(
-        name="The Grey Publisher",
-        books=books_dict["Harry Potter and the Prisoner of Azkaban"],
-    ),
-    Library(name="The Grey Publisher", books=books_dict["The Great Gatsby"]),
-    Library(name="The Grey Publisher", books=books_dict["Tender Is the Night"]),
-    Library(name="The Grey Publisher", books=books_dict["The Beautiful and Damned"]),
-    Library(name="The Grey Publisher", books=books_dict["The Lord of the Rings"]),
-    Library(name="The Grey Publisher", books=books_dict["The Hobbit"]),
-    Library(name="The Grey Publisher", books=books_dict["The Silmarillion"]),
-    Library(name="The Grey Publisher", books=books_dict["Pride and Prejudice"]),
-    Library(name="House of Paper", books=books_dict["Sense and Sensibility"]),
-    Library(name="House of Paper", books=books_dict["Emma"]),
-    Library(
-        name="House of Paper", books=books_dict["The Adventures of Huckleberry Finn"]
-    ),
-    Library(name="House of Paper", books=books_dict["The Adventures of Tom Sawyer"]),
-    Library(
-        name="House of Paper",
-        books=books_dict["A Connecticut Yankee in King Arthurs Court"],
-    ),
-    Library(name="House of Paper", books=books_dict["War and Peace"]),
-    Library(name="House of Paper", books=books_dict["Anna Karenina"]),
-    Library(name="House of Paper", books=books_dict["The Death of Ivan Ilyich"]),
-    Library(name="House of Paper", books=books_dict["Frankenstein"]),
-    Library(name="House of Paper", books=books_dict["The Last Man"]),
-    Library(name="House of Paper", books=books_dict["One Hundred Years of Solitude"]),
-    Library(name="House of Paper", books=books_dict["Love in the Time of Cholera"]),
-    Library(name="House of Paper", books=books_dict["Chronicle of a Death Foretold"]),
-]
 create_libraries = []
 
 
-for book_title, book_instance in books_dict.items():
-    library_object = Library(name="The Grey Publisher")
-    create_libraries.append(library_object)
-    library_object = Library(name="House of Paper")
-    create_libraries.append(library_object)
+for library_name, book_titles in libraries_data.items():
+    library = Library(name=library_name)
+    library.save()  # Save each library instance to the database to get the 'id'
+    create_libraries.append(
+        (library, book_titles)
+    )  # Store both library and book titles
 
-library = Library.objects.bulk_create(create_libraries)
+# Now, set the books for each Library
+for library, book_titles in create_libraries:
+    book_instances = [books_dict[title] for title in book_titles]
+    library.books.set(book_instances)  # Assign the books to the library
