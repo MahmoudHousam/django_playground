@@ -40,16 +40,14 @@ libraries_data = {
 create_libraries = []
 
 
-for (
-    library_name,
-    book_title,
-) in libraries_data.items():
-    library_object = Library(name=library_name)
-    library_object.save()
-    create_libraries.append(library_object)
+for library_name, book_titles in libraries_data.items():
+    library = Library(name=library_name)
+    library.save()  # Save each library instance to the database to get the 'id'
+    create_libraries.append(
+        (library, book_titles)
+    )  # Store both library and book titles
 
-library = Library.objects.bulk_create(create_libraries)
-
-for library, book_titles in zip(create_libraries, libraries_data.values()):
+# Now, set the books for each Library
+for library, book_titles in create_libraries:
     book_instances = [books_dict[title] for title in book_titles]
-    library.books.set(book_instances)
+    library.books.set(book_instances)  # Assign the books to the library
