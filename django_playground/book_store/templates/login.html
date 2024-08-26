@@ -4,6 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Login</title>
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
   <body>
@@ -12,6 +13,6 @@
       {% csrf_token %} {{ form.as_p }}
       <button type="submit">Login</button>
     </form>
-    <a href="{% url 'register' %}">Register</a>
+    <a href="{% url 'sign-in' %}">Register</a>
   </body>
 </html>
