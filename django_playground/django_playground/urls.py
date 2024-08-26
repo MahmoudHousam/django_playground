@@ -17,10 +17,19 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from book_store.views import list_books, DetailLibrary
+from book_store.views import (
+    list_books,
+    DetailLibrary,
+    UserSignUp,
+    UserLogin,
+    UserLogout,
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("book_list/", list_books, name="list_books"),
     path("library/<int:pk>/", DetailLibrary.as_view(), name="library_detail"),
+    path("signin/", UserSignUp.as_view(), name="sign-in"),
+    path("login/", UserLogin.as_view(), name="login"),
+    path("logout/", UserLogout.as_view(), name="logout"),
 ]
