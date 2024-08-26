@@ -17,9 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from book_store.views import list_books
+from book_store.views import list_books, DetailLibrary
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("book_list/", list_books, name="list_books"),
+    path("library/<int:pk>/", DetailLibrary.as_view(), name="library_detail"),
 ]
