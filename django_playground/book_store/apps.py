@@ -6,4 +6,4 @@ class BookStoreConfig(AppConfig):
     name = "book_store"
 
     def ready(self):
-        import book_store.models
+        import book_store.signals

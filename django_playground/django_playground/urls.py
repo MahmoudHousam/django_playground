@@ -23,6 +23,9 @@ from book_store.views import (
     UserSignUp,
     UserLogin,
     UserLogout,
+    AdminView,
+    LibrarianView,
+    MemberView,
 )
 
 urlpatterns = [
@@ -32,4 +35,7 @@ urlpatterns = [
     path("signin/", UserSignUp.as_view(), name="sign-in"),
     path("login/", UserLogin.as_view(), name="login"),
     path("logout/", UserLogout.as_view(), name="logout"),
+    path("adminview/", AdminView.as_view(), name="admin_view"),
+    path("librarianview/", LibrarianView.as_view(), name="librarin_view"),
+    path("memberview/", MemberView.as_view(), name="member_view"),
 ]
