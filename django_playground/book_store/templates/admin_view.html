@@ -1,0 +1,30 @@
+<!-- admin_view.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <h1>Admin Dashboard</h1>
+    <h2>Welcome, {{ user.username }}</h2>
+
+    <h3>Manage Users</h3>
+    <a href="{% url 'admin:auth_user_changelist' %}">View All Users</a>
+    <a href="{% url 'admin:auth_user_add' %}">Add New User</a>
+
+    <h3>Manage Libraries</h3>
+    <a href="{% url 'admin:book_store_library_changelist' %}"
+      >View All Libraries</a
+    >
+    <a href="{% url 'admin:book_store_library_add' %}">Add New Library</a>
+
+    <h3>Manage Books</h3>
+    <a href="{% url 'admin:book_store_book_changelist' %}">View All Books</a>
+    <a href="{% url 'admin:book_store_book_add' %}">Add New Book</a>
+
+    <h3>Reports and Analytics</h3>
+    <a href="#">View Reports</a>
+    <!-- You can create custom reports if needed -->
+  </body>
+</html>

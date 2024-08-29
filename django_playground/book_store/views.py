@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from .models import Author, Book, Library, Librarian
-from django.views.generic import DetailView, CreateView
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import Book, Library
+from django.contrib.auth.models import User
+from django.views.generic import DetailView, CreateView, TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 
 
-# Create your views here.
+############################################################
 def list_books(request):
     books = Book.objects.all()
     context = {"books": books}
@@ -23,6 +25,8 @@ class DetailLibrary(DetailView):
     context_object_name = "library"
 
 
+############################################################
+# Implement Basic User Authentication
 class UserSignUp(CreateView):
     form_class = UserCreationForm
     template_name = "register.html"
@@ -36,3 +40,32 @@ class UserLogin(LoginView):
 
 class UserLogout(LogoutView):
     next_page = reverse_lazy("login")
+
+
+############################################################
+# Implement Role-based Access Control
+class AdminRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.userprofile.role == "Admin"
+
+
+class LibrarianRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.userprofile.role == "Librarian"
+
+
+class MemberRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.userprofile.role == "Member"
+
+
+class AdminView(LoginRequiredMixin, AdminRequiredMixin, TemplateView):
+    template_name = "admin_view.html"
+
+
+class LibrarianView(LoginRequiredMixin, LibrarianRequiredMixin, TemplateView):
+    template_name = "librarian_view.html"
+
+
+class MemberView(LoginRequiredMixin, MemberRequiredMixin, TemplateView):
+    template_name = "member_view.html"
