@@ -1,11 +1,15 @@
+from .models import Book, Library
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from .models import Book, Library
 from django.contrib.auth.models import User
 from django.views.generic import DetailView, CreateView, TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    UserPassesTestMixin,
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 
 
 ############################################################
@@ -69,3 +73,28 @@ class LibrarianView(LoginRequiredMixin, LibrarianRequiredMixin, TemplateView):
 
 class MemberView(LoginRequiredMixin, MemberRequiredMixin, TemplateView):
     template_name = "member_view.html"
+
+
+############################################################
+# Implement Custom Permissions
+class BookCreateView(PermissionRequiredMixin, CreateView):
+    model = Book
+    fields = ["title", "author"]
+    template_name = "add_book.html"
+    success_url = reverse_lazy("book_list")
+    permission_required = "book_store.can_add_book"
+
+
+class BookUpdateView(PermissionRequiredMixin, CreateView):
+    model = Book
+    fields = ["title", "author"]
+    template_name = "update_book.html"
+    success_url = reverse_lazy("book_list")
+    permission_required = "book_store.can_update_book"
+
+
+class BookDeleteView(PermissionRequiredMixin, CreateView):
+    model = Book
+    template_name = "delete_book.html"
+    success_url = reverse_lazy("book_list")
+    permission_required = "book_store.can_delete_book"

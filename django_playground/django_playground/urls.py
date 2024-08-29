@@ -27,6 +27,9 @@ from book_store.views import (
     AdminView,
     LibrarianView,
     MemberView,
+    BookCreateView,
+    BookUpdateView,
+    BookDeleteView,
 )
 
 urlpatterns = [
@@ -40,4 +43,7 @@ urlpatterns = [
     path("adminview/", AdminView.as_view(), name="admin_view"),
     path("librarianview/", LibrarianView.as_view(), name="librarin_view"),
     path("memberview/", MemberView.as_view(), name="member_view"),
+    path("books/add/", BookCreateView.as_view(), name="book_add"),
+    path("books/<int:pk>/edit/", BookUpdateView.as_view(), name="book_edit"),
+    path("books/<int:pk>/delete/", BookDeleteView.as_view(), name="book_delete"),
 ]
