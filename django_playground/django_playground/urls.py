@@ -15,8 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.contrib import admin
 from django.urls import path
+from django.contrib import admin
+from django.shortcuts import redirect
 from book_store.views import (
     list_books,
     DetailLibrary,
@@ -29,6 +30,7 @@ from book_store.views import (
 )
 
 urlpatterns = [
+    path("", lambda request: redirect("admin/")),
     path("admin/", admin.site.urls),
     path("book_list/", list_books, name="list_books"),
     path("library/<int:pk>/", DetailLibrary.as_view(), name="library_detail"),
